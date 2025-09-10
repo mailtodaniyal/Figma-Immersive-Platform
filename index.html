@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cavinco - Premium Wine Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --gray: #25354b;
+            --wine-red: #ba1628;
+            --linen: #f3ecda;
+            --coral: #E06D54;
+            --sparkling: #e98c3c;
+            --rose: #f4a59a;
+            --red: #ba1628;
+            --white: #EAC389;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            color: var(--gray);
+            background-color: var(--linen);
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Background Animation Elements */
+        .bubble {
+            position: fixed;
+            border-radius: 50%;
+            background: rgba(186, 22, 40, 0.1);
+            opacity: 0;
+            animation: float 15s infinite;
+            z-index: -1;
+        }
+        
+        .dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(37, 53, 75, 0.15);
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* Header Styles */
+        .promo-banner {
+            background-color: var(--coral);
+            color: white;
+            text-align: center;
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        header {
+            background-color: rgba(243, 236, 218, 0.95);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 32px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray);
+        }
+        
+        .logo span {
+            color: var(--wine-red);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin: 0 15px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 15px;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--coral);
+        }
+        
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .header-icons i {
+            font-size: 20px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .header-icons i:hover {
+            color: var(--coral);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-slider {
+            height: 100%;
+            width: 100%;
+            position: relative;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: flex;
+            align-items: center;
+            padding: 0 10%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-1 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+        }
+        
+        .slide-2 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+        }
+        
+        .slide-3 {
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+        }
+        
+        .hero-content {
+            color: white;
+            max-width: 600px;
+            transform: translateY(50px);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+        
+        .slide.active .hero-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .hero-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--coral);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--wine-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .slider-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slider-dot.active {
+            background-color: white;
+        }
+        
+        /* Categories Section */
+        .categories {
+            padding: 80px 5%;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            margin-bottom: 50px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: var(--coral);
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-info {
+            padding: 20px;
+        }
+        
+        .category-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+        
+        .category-info p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        /* Selections Section */
+        .selections {
+            padding: 80px 5%;
+            background-color: white;
+        }
+        
+        .selection-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .selection-card {
+            position: relative;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .selection-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.5s;
+        }
+        
+        .selection-card:hover .selection-bg {
+            transform: scale(1.1);
+        }
+        
+        .selection-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s;
+        }
+        
+        .selection-card:hover .selection-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .selection-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        /* Seasonal Section */
+        .seasonal {
+            padding: 80px 5%;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1601593346740-9b7bde4c319f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+        }
+        
+        .seasonal h2 {
+            color: white;
+        }
+        
+        .seasonal-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .seasonal-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        /* Reviews Section */
+        .reviews {
+            padding: 80px 5%;
+            background-color: var(--linen);
+        }
+        
+        .review-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .review-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .review-card::before {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 60px;
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            color: rgba(186, 22, 40, 0.1);
+        }
+        
+        .review-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .reviewer {
+            display: flex;
+            align-items: center;
+        }
+        
+        .reviewer-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            margin-right: 15px;
+        }
+        
+        .reviewer-info h4 {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        /* Newsletter Section */
+        .newsletter {
+            padding: 80px 5%;
+            background-color: var(--gray);
+            color: white;
+            text-align: center;
+        }
+        
+        .newsletter h2 {
+            color: white;
+        }
+        
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            font-size: 18px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 30px 0 0 30px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 16px;
+        }
+        
+        .newsletter-form button {
+            padding: 0 30px;
+            background-color: var(--coral);
+            color: white;
+            border: none;
+            border-radius: 0 30px 30px 0;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: var(--wine-red);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--gray);
+            color: white;
+            padding: 60px 5% 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+        
+        .footer-column h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: var(--coral);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--coral);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ccc;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .selection-cards, .review-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero-content h1 {
+                font-size: 36px;
+            }
+            
+            .selection-cards, .review-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input {
+                border-radius: 30px;
+                margin-bottom: 10px;
+            }
+            
+            .newsletter-form button {
+                border-radius: 30px;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero {
+                height: 60vh;
+            }
+            
+            .hero-content h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation Elements -->
+    <div id="bubbles-container"></div>
+    <div id="dots-container"></div>
+
+    <!-- Promo Banner -->
+    <div class="promo-banner">
+        <p>FREE SHIPPING ON ORDERS OVER $100 | JOIN OUR WINE CLUB FOR EXCLUSIVE BENEFITS</p>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">Cavin<span>co</span></div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Wines</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">My Account</a></li>
+            </ul>
+        </nav>
+        <div class="header-icons">
+            <i class="fas fa-search"></i>
+            <i class="fas fa-user"></i>
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <div class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-slider">
+            <div class="slide slide-1 active">
+                <div class="hero-content">
+                    <h1>Discover Exceptional Wines from Artisan Producers</h1>
+                    <p>Explore our curated selection of premium wines from independent winemakers around the world.</p>
+                    <a href="#" class="btn">Explore Wines</a>
+                </div>
+            </div>
+            <div class="slide slide-2">
+                <div class="hero-content">
+                    <h1>Perfect Pairings for Every Occasion</h1>
+                    <p>Find the ideal wine for your next dinner party, celebration, or quiet evening at home.</p>
+                    <a href="#" class="btn">Get Recommendations</a>
+                </div>
+            </div>
+            <div class="slide slide-3">
+                <div class="hero-content">
+                    <h1>Join Our Community of Wine Lovers</h1>
+                    <p>Share tasting notes, get personalized recommendations, and enjoy exclusive events.</p>
+                    <a href="#" class="btn">Join Now</a>
+                </div>
+            </div>
+        </div>
+        <div class="slider-controls">
+            <div class="slider-dot active" data-slide="0"></div>
+            <div class="slider-dot" data-slide="1"></div>
+            <div class="slider-dot" data-slide="2"></div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <h2 class="section-title">Explore Categories</h2>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="category-info">
+                    <h3>Red Wines</h3>
+                    <p>Bold and complex flavors from around the world</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="category-info">
+                    <h3>White Wines</h3>
+                    <p>Crisp, refreshing, and perfect for any occasion</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="category-info">
+                    <h3>Sparkling Wines</h3>
+                    <p>Celebrate with bubbles from renowned regions</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+            <div class="category-card">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="category-info">
+                    <h3>Rosé Wines</h3>
+                    <p>Beautiful hues and delightful summer sippers</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Selections Section -->
+    <section class="selections">
+        <h2 class="section-title">Curated Selections</h2>
+        <div class="selection-cards">
+            <div class="selection-card">
+                <div class="selection-bg" style="background-image: url('https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="selection-content">
+                    <h3>Summer Refreshment</h3>
+                    <p>Light and crisp wines perfect for warm days</p>
+                    <a href="#" class="btn">Discover</a>
+                </div>
+            </div>
+            <div class="selection-card">
+                <div class="selection-bg" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="selection-content">
+                    <h3>Winter Warmers</h3>
+                    <p>Rich, full-bodied wines for cozy evenings</p>
+                    <a href="#" class="btn">Discover</a>
+                </div>
+            </div>
+            <div class="selection-card">
+                <div class="selection-bg" style="background-image: url('https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');"></div>
+                <div class="selection-content">
+                    <h3>Organic Selection</h3>
+                    <p>Eco-friendly wines from sustainable vineyards</p>
+                    <a href="#" class="btn">Discover</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Seasonal Section -->
+    <section class="seasonal">
+        <h2 class="section-title">Autumn Collection</h2>
+        <div class="seasonal-content">
+            <p>Embrace the flavors of fall with our specially curated selection of wines that pair perfectly with autumn cuisine and cooler evenings. Discover robust reds and aromatic whites that capture the essence of the season.</p>
+            <a href="#" class="btn">Explore Autumn Wines</a>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section class="reviews">
+        <h2 class="section-title">What Our Customers Say</h2>
+        <div class="review-cards">
+            <div class="review-card">
+                <p class="review-text">The wine selection here is incredible! I've discovered so many new favorites from small producers that I wouldn't have found anywhere else.</p>
+                <div class="reviewer">
+                    <div class="reviewer-img" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="reviewer-info">
+                        <h4>Sarah Johnson</h4>
+                        <p>Wine Enthusiast</p>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card">
+                <p class="review-text">As a restaurant owner, finding quality wines at good prices is essential. Cavinco has been a game-changer for our wine program.</p>
+                <div class="reviewer">
+                    <div class="reviewer-img" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="reviewer-info">
+                        <h4>Michael Torres</h4>
+                        <p>Restaurant Owner</p>
+                    </div>
+                </div>
+            </div>
+            <div class="review-card">
+                <p class="review-text">The personalized recommendations are spot-on! I've loved every bottle they've suggested based on my taste preferences.</p>
+                <div class="reviewer">
+                    <div class="reviewer-img" style="background-image: url('https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80');"></div>
+                    <div class="reviewer-info">
+                        <h4>Jessica Williams</h4>
+                        <p>Wine Club Member</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <h2 class="section-title">Join Our Newsletter</h2>
+        <p>Subscribe to receive updates on new arrivals, special offers, and exclusive tasting events.</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Your email address">
+            <button type="submit">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Cavinco</h3>
+                <p>Discover exceptional wines from artisan producers around the world.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Shop</h3>
+                <ul>
+                    <li><a href="#">Red Wines</a></li>
+                    <li><a href="#">White Wines</a></li>
+                    <li><a href="#">Sparkling Wines</a></li>
+                    <li><a href="#">Rosé Wines</a></li>
+                    <li><a href="#">Special Offers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Information</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Producers</a></li>
+                    <li><a href="#">Sustainability</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Wine Street, Napa, CA</li>
+                    <li><i class="fas fa-phone"></i> +1 (800) 123-4567</li>
+                    <li><i class="fas fa-envelope"></i> info@cavinco.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Cavinco. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Create background animation elements
+        function createBubbles() {
+            const bubblesContainer = document.getElementById('bubbles-container');
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size between 20 and 100px
+                const size = Math.random() * 80 + 20;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                
+                // Random position
+                bubble.style.left = `${Math.random() * 100}vw`;
+                
+                // Random delay
+                bubble.style.animationDelay = `${Math.random() * 15}s`;
+                
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+        
+        function createDots() {
+            const dotsContainer = document.getElementById('dots-container');
+            for (let i = 0; i < 50; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                
+                // Random position
+                dot.style.left = `${Math.random() * 100}vw`;
+                dot.style.top = `${Math.random() * 100}vh`;
+                
+                dotsContainer.appendChild(dot);
+            }
+        }
+        
+        // Hero slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        function showSlide(n) {
+            // Hide all slides
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            
+            // Remove active class from all dots
+            dots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            // Update current slide
+            currentSlide = n;
+            
+            // Show selected slide
+            slides[currentSlide].classList.add('active');
+            
+            // Activate corresponding dot
+            dots[currentSlide].classList.add('active');
+        }
+        
+        function nextSlide() {
+            let next = currentSlide + 1;
+            if (next >= slides.length) {
+                next = 0;
+            }
+            showSlide(next);
+        }
+        
+        // Auto advance slides
+        setInterval(nextSlide, 5000);
+        
+        // Add click events to dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+        });
+        
+        // Initialize when page loads
+        window.addEventListener('load', () => {
+            createBubbles();
+            createDots();
+            showSlide(0);
+        });
+    </script>
+</body>
+</html>
